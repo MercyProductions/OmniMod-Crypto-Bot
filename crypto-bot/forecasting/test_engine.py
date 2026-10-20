@@ -12,7 +12,7 @@ import numpy as np
 from engine.features import checked_bars, latest_features, feature_frame, targets, MINUTE, FEATURES
 from engine.validation import split_periods, walk_forward, binary_metrics, paired_day_interval, paper_metrics, promotion_review
 from engine.warehouse import Warehouse
-from engine.service import ForecastEngine, handler_for, ThreadingHTTPServer
+from engine.service import ForecastEngine, handler_for, ThreadingHTTPServer, service_lease
 from engine.models import train_horizon, LightGBMForecaster
 from engine.registry import prospective_comparison, ResearchRegistry
 from engine.cli import prospective_dataset
@@ -217,6 +217,14 @@ class ModelTests(unittest.TestCase):
 
 
 class RegistryTests(unittest.TestCase):
+    def test_duplicate_inference_process_cannot_share_the_same_store(self):
+        with tempfile.TemporaryDirectory() as folder:
+            file = str(Path(folder)/'warehouse.sqlite')
+            with service_lease(file):
+                with self.assertRaises(FileExistsError):
+                    with service_lease(file): pass
+            self.assertFalse(Path(file+'.service.lock').exists())
+
     def paired(self):
         rows = []
         for i in range(600):

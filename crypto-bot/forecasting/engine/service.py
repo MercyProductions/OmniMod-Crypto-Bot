@@ -7,6 +7,10 @@ import os
 import re
 import threading
 import time
+import socket
+import secrets
+import signal
+from contextlib import contextmanager
 import pandas as pd
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -16,6 +20,20 @@ from .warehouse import Warehouse
 from .registry import ResearchRegistry
 
 MAX_BODY = 2_000_000
+
+
+@contextmanager
+def service_lease(database):
+    lock = Path(str(Path(database).resolve())+'.service.lock')
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    owner = {'pid': os.getpid(), 'host': socket.gethostname(), 'nonce': secrets.token_hex(16)}
+    with lock.open('x', encoding='utf-8') as handle:
+        handle.write(canonical(owner)); handle.flush(); os.fsync(handle.fileno())
+    try: yield
+    finally:
+        if json.loads(lock.read_text(encoding='utf-8')) != owner:
+            raise RuntimeError('Inference lock ownership changed; preserved for review.')
+        lock.unlink()
 
 
 class ForecastEngine:
@@ -151,13 +169,22 @@ def main():
     if len(token) < 32: raise SystemExit('Set a private CRYPTO_FORECAST_TOKEN with at least 32 characters; never pass it on the command line.')
     lightgbm = LightGBMForecaster(load_artifact(args.artifact) if args.artifact else None)
     chronos = ChronosForecaster(args.chronos_revision) if args.chronos_revision else None
-    warehouse = Warehouse(args.database)
-    engine = ForecastEngine(warehouse, lightgbm, chronos, registry=ResearchRegistry(str(Path(args.database).parent/'research-registry.json')))
-    server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(engine, token))
-    server.capacity = threading.BoundedSemaphore(1)
-    print(canonical({'listening': '127.0.0.1', 'port': args.port, 'liveTradingEnabled': False}), flush=True)
-    try: server.serve_forever()
-    finally: server.server_close(); warehouse.close()
+    with service_lease(args.database):
+        warehouse = Warehouse(args.database)
+        server = None
+        try:
+            engine = ForecastEngine(warehouse, lightgbm, chronos, registry=ResearchRegistry(str(Path(args.database).parent/'research-registry.json')))
+            server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(engine, token))
+            server.capacity = threading.BoundedSemaphore(1)
+            def stop_service(*_):
+                threading.Thread(target=server.shutdown, daemon=True).start()
+            signal.signal(signal.SIGINT, stop_service)
+            signal.signal(signal.SIGTERM, stop_service)
+            print(canonical({'listening': '127.0.0.1', 'port': args.port, 'liveTradingEnabled': False}), flush=True)
+            server.serve_forever()
+        finally:
+            if server: server.server_close()
+            warehouse.close()
 
 
 if __name__ == '__main__': main()

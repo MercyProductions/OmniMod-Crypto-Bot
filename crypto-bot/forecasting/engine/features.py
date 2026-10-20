@@ -150,6 +150,7 @@ def targets(rows, index, horizon, features, cost_bps=40):
             'volatility_expansion': int(np.std(future_returns) > features['volatility15']*1.5),
             'return': final_return, 'volatility': float(np.std(future_returns)),
             'mfe': highest/entry-1, 'mae': lowest/entry-1,
+            'excursion_basis': 'full_horizon_OHLC_bounds_not_executed_position_excursion',
             'modeled_net_return': exit_price/entry-1-cost_bps/10_000,
             'exit_reason': reason, 'time_to_event': elapsed, 'entry': entry,
             'label_end': start+horizon*MINUTE, 'target_pct': target_pct, 'stop_pct': stop_pct,

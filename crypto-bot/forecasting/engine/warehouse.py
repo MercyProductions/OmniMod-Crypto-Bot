@@ -80,7 +80,11 @@ class Warehouse:
                                 'directionCorrect': None if forecast.get('expectedReturn') is None else (forecast['expectedReturn'] > 0) == bool(outcome['up']),
                                 'movementBeforeAlert': forecast.get('movementBeforeAlert'),
                                 'movementAfterAlert': outcome['return'],
-                                'leadTimeMinutes': outcome['time_to_event'] if outcome['target_before_stop'] else None})
+                                'leadTimeMinutes': None,
+                                'leadTimeMinutesBounds': [(start-forecast['issuedAt'])/MINUTE+outcome['time_to_event']-1,
+                                                          (start-forecast['issuedAt'])/MINUTE+outcome['time_to_event']]
+                                  if outcome['target_before_stop'] else None,
+                                'leadTimeBasis': 'OHLC target-touch minute bounds, not an observed intrabar event timestamp'})
                 self.db.execute('INSERT INTO outcomes VALUES(?,?,?)', (key, now, canonical(outcome)))
                 resolved += 1
         return {'resolved': resolved, 'missingOutcomeWindows': missing, 'pending': len(pending)-resolved}
