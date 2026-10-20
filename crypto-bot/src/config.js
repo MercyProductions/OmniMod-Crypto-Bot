@@ -43,6 +43,7 @@ export const config = Object.freeze({
   maxSignals: numberEnv('CRYPTO_MAX_SIGNALS', 5, 1, 12),
   maxMarketRank: numberEnv('CRYPTO_MAX_MARKET_RANK', 250, 20, 1000),
   broadDiscoveryEnabled: boolEnv('CRYPTO_BROAD_DISCOVERY_ENABLED', true),
+  forecastDiscoveryBridgeEnabled: boolEnv('CRYPTO_FORECAST_DISCOVERY_BRIDGE_ENABLED', false),
   venueDiscoveryEnabled: boolEnv('CRYPTO_VENUE_DISCOVERY_ENABLED', true),
   venueResearchCandidates: numberEnv('CRYPTO_VENUE_RESEARCH_CANDIDATES', 2, 0, 4),
   minVolumeUsd: numberEnv('CRYPTO_MIN_VOLUME_USD', 5_000_000, 100_000, 1_000_000_000),

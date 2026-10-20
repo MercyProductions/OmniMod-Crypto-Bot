@@ -3,6 +3,7 @@
 .env.*
 *.env
 !.env.example
+!.env.forecasting.example
 !*.env.example
 *.pem
 *.key
@@ -32,3 +33,11 @@ reviewed-uploads/
 evidence-reports/
 .DS_Store
 Thumbs.db
+.venv*/
+__pycache__/
+*.pyc
+**/artifacts/
+**/datasets/
+*.safetensors
+*.pt
+*.pkl

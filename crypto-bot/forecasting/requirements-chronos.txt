@@ -1,0 +1,4 @@
+-r requirements.txt
+chronos-forecasting==2.3.2
+transformers==5.20.2
+# Install a platform-appropriate PyTorch wheel separately; CPU is supported.

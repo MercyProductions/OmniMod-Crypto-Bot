@@ -1,0 +1,98 @@
+{
+  "mode": "bounded_public_research_probe",
+  "passes": [
+    {
+      "observedAt": 1792478285289,
+      "coverage": {
+        "directory": 3729,
+        "activeSpot": 1380,
+        "observed": 0,
+        "freshObserved": 0,
+        "rejectedObservations": {},
+        "scope": "Venue-specific monitoring, not every cryptocurrency or USD-converted liquidity.",
+        "selected": 1,
+        "fallbackDirectory": 403,
+        "fallbackScope": "bounded two-pair rotation, not comprehensive real-time fallback",
+        "stream": "not_started"
+      },
+      "forecasted": 0,
+      "abstained": 0,
+      "failures": [
+        "forecast_unavailable:coinbase:spot:HBAR-USD:forecast_worker_http_422:stale_completed_history"
+      ],
+      "emerging": [],
+      "providerUsage": {
+        "requests": 7,
+        "failures": 0,
+        "configuredRequestsPerMinutePerHost": 12,
+        "meanLatencyMs": 734.3974285714286,
+        "providers": {
+          "data-api.binance.vision": {
+            "start": 1792478280132,
+            "used": 1,
+            "cooldown": 0
+          },
+          "api.exchange.coinbase.com": {
+            "start": 1792478284923,
+            "used": 6,
+            "cooldown": 0
+          }
+        }
+      },
+      "durationMs": 5156.1982,
+      "status": "data_or_worker_unavailable",
+      "liveTradingEnabled": false
+    },
+    {
+      "observedAt": 1792478302146,
+      "coverage": {
+        "directory": 3729,
+        "activeSpot": 1380,
+        "observed": 480,
+        "freshObserved": 480,
+        "rejectedObservations": {
+          "stale_future_or_missing_native_time": 53
+        },
+        "scope": "Venue-specific monitoring, not every cryptocurrency or USD-converted liquidity.",
+        "selected": 2,
+        "fallbackDirectory": 403,
+        "fallbackScope": "bounded two-pair rotation, not comprehensive real-time fallback",
+        "stream": "connected"
+      },
+      "forecasted": 2,
+      "abstained": 0,
+      "failures": [],
+      "emerging": [],
+      "providerUsage": {
+        "requests": 11,
+        "failures": 0,
+        "configuredRequestsPerMinutePerHost": 12,
+        "meanLatencyMs": 625.689872727273,
+        "providers": {
+          "data-api.binance.vision": {
+            "start": 1792478280132,
+            "used": 5,
+            "cooldown": 0
+          },
+          "api.exchange.coinbase.com": {
+            "start": 1792478284923,
+            "used": 6,
+            "cooldown": 0
+          }
+        }
+      },
+      "durationMs": 1854.3531000000003,
+      "status": "research_collecting",
+      "liveTradingEnabled": false
+    }
+  ],
+  "discordDeliveryExercised": false,
+  "productionApproval": false,
+  "liveTradingEnabled": false,
+  "limitations": [
+    "Bounded 15-second observation, not a full-market coverage claim",
+    "LightGBM service request exercised; Discord and orders were not exercised",
+    "An earlier cold fallback candidate was rejected for stale completed history",
+    "Five frozen horizon forecasts per selected instrument remain experimental"
+  ]
+}

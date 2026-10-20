@@ -6,6 +6,7 @@ import { config, requireRuntimeConfig, dataDir } from './config.js';
 import { formatBroadDiscoverySummary } from './broadDiscovery.js';
 import { formatVenueDiscoverySummary, selectVenueResearchAssets } from './venueDiscovery.js';
 import { refreshVenueResearchOutcomes } from './venueResearch.js';
+import { eligibleForecastDiscoveryAssets, mergeForecastDiscoveryCandidates } from './forecasting/candidateBridge.js';
 import { buildCommands } from './commands.js';
 import { assessStrategyValidation, fetchMarketUniverse, getAmbiguousProviderSymbols, marketUniverseCacheKey, formatPercent, formatPrice, screenMomentum, screenMomentumDetailed, scoreAsset } from './cryptoData.js';
 import { enrichMarketAssets, fetchHistoricalCandles, screenSpotPairCoverage } from './marketProviders.js';
@@ -255,7 +256,11 @@ async function executeGuildScan(guildId, options = {}) {
     : await screenSpotPairCoverage(preliminaryCandidates, { minProviders: settings.minProviderConfirmations });
   const providerCoverageMs = Math.round(performance.now() - providerCoverageStarted);
   const deepAnalysisCandidates = coverageScreen.candidates;
-  const preliminary = deepAnalysisCandidates.slice(0, settings.maxProviderCandidates);
+  const forecastQueue = config.forecastDiscoveryBridgeEnabled
+    ? await readMarketSnapshot('forecast-discovery-queue').catch(() => ({ candidates: [], bridgeError: 'forecast_queue_unavailable' })) : null;
+  const forecastDiscovery = eligibleForecastDiscoveryAssets(forecastQueue?.candidates || [], snapshot.venueCandidates || [], now.getTime());
+  if (forecastQueue?.bridgeError) forecastDiscovery.rejections.push({ code: forecastQueue.bridgeError });
+  const preliminary = mergeForecastDiscoveryCandidates(deepAnalysisCandidates, forecastDiscovery.assets, settings.maxProviderCandidates);
   const venueSelection = options.allowNewSignals === false ? { assets: [], rejections: [] }
     : selectVenueResearchAssets(snapshot, preliminary, settings, now.getTime());
   const venueResearchIds = new Set(venueSelection.assets.map((asset) => asset.id));
@@ -263,7 +268,8 @@ async function executeGuildScan(guildId, options = {}) {
   // New Kraken-dependent candidates otherwise wait until the next scan: the
   // hub used to subscribe only after this scan's confirmation had finished.
   if (settings.realtimeEnabled && options.allowNewSignals !== false) realtimeHub.start(deepResearchAssets);
-  const rejectionRows = [...discoveryScreen.rejections, ...coverageScreen.rejections, ...deepAnalysisCandidates.slice(settings.maxProviderCandidates)
+  const rejectionRows = [...discoveryScreen.rejections, ...coverageScreen.rejections,
+    ...forecastDiscovery.rejections.map(row => ({ ...row, stage: 'forecast_discovery_bridge' })), ...deepAnalysisCandidates.slice(settings.maxProviderCandidates)
     .map((asset) => ({ symbol: asset.symbol, assetId: asset.id, stage: 'discovery_cap', code: 'deep_analysis_cap' }))];
   const discoveryMs = Math.round(performance.now() - discoveryStarted);
   const openAssets = (tracker.predictions || [])
