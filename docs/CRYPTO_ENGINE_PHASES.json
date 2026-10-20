@@ -74,8 +74,8 @@
     {
       "id": 12,
       "name": "Publish review branch, evidence and handoff",
-      "status": "in progress",
-      "evidence": "Incremental development commits, evidence and handoff saved. Review-branch publication and PR verification next."
+      "status": "verified complete",
+      "evidence": "Incremental development branch published; PR #1 created. Source audit, setup, machine-readable experiments, live-probe evidence and verified/open checklist committed. Production unchanged."
     }
   ],
   "remaining": [
@@ -109,5 +109,6 @@
       "status": "pending",
       "reason": "Baseline reuse of blind data is documented; new pipeline fixes separation without silently changing the old comparison."
     }
-  ]
+  ],
+  "pullRequest": "https://github.com/MercyProductions/OmniMod-Crypto-Bot/pull/1"
 }
