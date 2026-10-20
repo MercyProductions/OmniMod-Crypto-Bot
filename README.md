@@ -2,6 +2,12 @@
 
 Discover supported crypto assets and venue products, validate day-trading hypotheses, and track qualified paper setups. `npm start` launches **only Crypto**. Automated tests establish code behavior; current provider coverage and forward performance require separate evidence.
 
+## Forecasting engine development upgrade
+
+The opt-in LightGBM/Chronos research engine is on `feat/crypto-forecasting-engine-2026-10-20`; it has not been deployed or approved for live trading. Start with the [audit](docs/CRYPTO_ENGINE_AUDIT.md), [setup and developer handoff](docs/CRYPTO_FORECASTING_SETUP.md), [measured results](docs/CRYPTO_ENGINE_RESULTS.md) and [phase checklist](docs/CRYPTO_ENGINE_PHASES.json). The pre-upgrade source is preserved as `baseline/pre-crypto-forecasting-2026-10-20`.
+
+The engine includes streaming venue discovery, a bounded detail funnel, five forecast horizons, real Python model training/inference and frozen prospective observations/outcomes. The historical experiment did not establish profitable trading or justify promotion. Experimental forecasts remain separate from the existing production approval/risk chain. Free public data and optional paid-provider paths have different coverage; no claim of scanning every cryptocurrency is made.
+
 ## How it works
 
 1. Combine broad asset-directory and venue discovery with a cheap liquidity/movement screen. Displayed highlights are a subset of the universe.

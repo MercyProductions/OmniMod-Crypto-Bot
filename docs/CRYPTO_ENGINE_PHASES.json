@@ -5,17 +5,109 @@
   "productionChanged": false,
   "liveTradingEnabled": false,
   "phases": [
-    { "id": 1, "name": "Audit and preserve baseline", "status": "verified complete", "evidence": "392 baseline tests; 70 source hashes match original local source, remote deployment unverified; CRYPTO_ENGINE_AUDIT.md" },
-    { "id": 2, "name": "Active universe, streaming discovery and candidate bridge", "status": "pending" },
-    { "id": 3, "name": "Python LightGBM and Chronos challengers", "status": "pending" },
-    { "id": 4, "name": "Timestamped feature warehouse and archive import", "status": "pending" },
-    { "id": 5, "name": "Five-horizon forecasts and frozen outcome grading", "status": "pending" },
-    { "id": 6, "name": "Early watch signals and lead-time measurements", "status": "pending" },
-    { "id": 7, "name": "Purged validation, prospective promotion and rollback", "status": "pending" },
-    { "id": 8, "name": "After-cost research and existing risk integration", "status": "pending" },
-    { "id": 9, "name": "Experimental Discord embeds and deduplication", "status": "pending" },
-    { "id": 10, "name": "Authenticated bounded worker and hosting guide", "status": "pending" },
-    { "id": 11, "name": "Real-data comparisons and regression/integration checks", "status": "pending" },
-    { "id": 12, "name": "Publish review branch, evidence and handoff", "status": "pending" }
+    {
+      "id": 1,
+      "name": "Audit and preserve baseline",
+      "status": "verified complete",
+      "evidence": "392 baseline tests; 70 source hashes match original local source, remote deployment unverified; CRYPTO_ENGINE_AUDIT.md"
+    },
+    {
+      "id": 2,
+      "name": "Active universe, streaming discovery and candidate bridge",
+      "status": "verified complete",
+      "evidence": "Bounded live probe: 3729 Binance instruments, 1380 active spot pairs, 480 fresh observed in 15 seconds, two successful inference requests. Coinbase fallback directory403; stale candles rejected. Not full-ecosystem coverage."
+    },
+    {
+      "id": 3,
+      "name": "Python LightGBM and Chronos challengers",
+      "status": "verified complete",
+      "evidence": "Actual LightGBM tasks and pinned Chronos inference; 43,964 real-data horizon observations; experimental only."
+    },
+    {
+      "id": 4,
+      "name": "Timestamped feature warehouse and archive import",
+      "status": "verified complete",
+      "evidence": "Six official SHA-256 verified BTC/ETH archives; causal features and SQLite frozen-input/outcome tests; historical L2 missing."
+    },
+    {
+      "id": 5,
+      "name": "Five-horizon forecasts and frozen outcome grading",
+      "status": "verified complete",
+      "evidence": "Five horizons, immutable forecasts, full-minute-only grading and missing-window tests."
+    },
+    {
+      "id": 6,
+      "name": "Early watch signals and lead-time measurements",
+      "status": "in progress",
+      "evidence": "Quiet-market activity queue and post-move labels verified by tests. Empirical prediction lead-time advantage needs prospective outcomes; no advantage claimed."
+    },
+    {
+      "id": 7,
+      "name": "Purged validation, prospective promotion and rollback",
+      "status": "in progress",
+      "evidence": "Purged chronological learning, read-only prospective retraining and matched research suspension verified. No automatic production promotion; prospective cost/performance evidence unavailable."
+    },
+    {
+      "id": 8,
+      "name": "After-cost research and existing risk integration",
+      "status": "in progress",
+      "evidence": "Existing execution, exposure and risk regressions preserved. Fixed OHLC research costs and after-cost context implemented; executable new-model EV and profitable paper evidence unverified."
+    },
+    {
+      "id": 9,
+      "name": "Experimental Discord embeds and deduplication",
+      "status": "in progress",
+      "evidence": "Experimental embeds, after-cost/uncertainty/source labels and deduplication implemented; payload tests pass. Actual private Discord delivery was not exercised; disabled by default."
+    },
+    {
+      "id": 10,
+      "name": "Authenticated bounded worker and hosting guide",
+      "status": "in progress",
+      "evidence": "Authenticated Node-to-Python service and body/response/process limits verified locally. Remote TLS/private transport and cPanel workload support unverified; no deployment."
+    },
+    {
+      "id": 11,
+      "name": "Real-data comparisons and regression/integration checks",
+      "status": "verified complete",
+      "evidence": "406 Node tests, 21 Python tests, configured JS/hosting syntax checks; actual LightGBM and pinned Chronos evaluation plus bounded live transport probe. This does not verify future profitability."
+    },
+    {
+      "id": 12,
+      "name": "Publish review branch, evidence and handoff",
+      "status": "in progress",
+      "evidence": "Incremental development commits, evidence and handoff saved. Review-branch publication and PR verification next."
+    }
+  ],
+  "remaining": [
+    {
+      "item": "Prospective predictive/lead-time and after-cost validation",
+      "status": "blocked",
+      "reason": "Requires newly issued forecasts, later outcomes and verified point-in-time execution costs over enough independent days."
+    },
+    {
+      "item": "Full existing-engine historical comparator",
+      "status": "blocked",
+      "reason": "Missing historical multi-provider, execution/event vintages and deployed model artifacts."
+    },
+    {
+      "item": "Survivorship-aware broad historical study",
+      "status": "blocked",
+      "reason": "Current verified corpus has BTC/ETH only; needs a predeclared point-in-time asset master including inactive/failed symbols."
+    },
+    {
+      "item": "Validated ensemble",
+      "status": "pending",
+      "reason": "No evidence justifies selecting or combining the current challengers."
+    },
+    {
+      "item": "Production hosting/Discord verification",
+      "status": "pending",
+      "reason": "Keep new posting, bridge and production deployment off until reviewed and deliberately configured."
+    },
+    {
+      "item": "Independent repair of legacy uncertainty/calibration contract",
+      "status": "pending",
+      "reason": "Baseline reuse of blind data is documented; new pipeline fixes separation without silently changing the old comparison."
+    }
   ]
 }

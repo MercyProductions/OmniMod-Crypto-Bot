@@ -78,3 +78,11 @@ Generated from `crypto-bot/.env.example`. Copy the template, never another perso
 | `SHARED_MAX_SPREAD_PCT` | 0.5 | Runtime, data-source, cost, review or safety setting; see template comments. |
 | `SHARED_MIN_REWARD_RISK` | 1.25 | Runtime, data-source, cost, review or safety setting; see template comments. |
 | `PAPER_MONITOR_INTERVAL_SECONDS` | 0 | Runtime, data-source, cost, review or safety setting; see template comments. |
+
+## Optional forecasting research
+
+| Variable | Default | Role |
+| --- | --- | --- |
+| `CRYPTO_FORECAST_DISCOVERY_BRIDGE_ENABLED` | false | Opt-in exact-identity discovery bridge; one existing detail slot, unchanged final gates. |
+
+Additional separate-worker settings and secret handling are documented in [CRYPTO_FORECASTING_SETUP.md](CRYPTO_FORECASTING_SETUP.md) and [the forecasting template](../crypto-bot/.env.forecasting.example).
