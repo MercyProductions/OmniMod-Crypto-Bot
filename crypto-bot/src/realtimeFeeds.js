@@ -11,7 +11,10 @@ export function parseBinanceMessage(payload) {
   if (!pair.endsWith('USDT')) return null;
   const bid = finite(row.b);
   const ask = finite(row.a);
-  return bid > 0 && ask > 0 ? { provider: 'Binance WS', symbol: pair.slice(0, -4), bid, ask, price: (bid + ask) / 2 } : null;
+  const stamp = Number(row.E);
+  const sourceTime = stamp > 0 && Number.isFinite(new Date(stamp).getTime())
+    ? { providerObservedAt: new Date(stamp).toISOString(), timestampBasis: 'provider_event' } : {};
+  return bid > 0 && ask > 0 ? { provider: 'Binance WS', symbol: pair.slice(0, -4), bid, ask, price: (bid + ask) / 2, ...sourceTime } : null;
 }
 
 export function parseCoinbaseMessage(payload) {
@@ -20,7 +23,9 @@ export function parseCoinbaseMessage(payload) {
   const bid = finite(payload.best_bid);
   const ask = finite(payload.best_ask);
   const price = bid > 0 && ask > 0 ? (bid + ask) / 2 : finite(payload.price);
-  return symbol && price > 0 ? { provider: 'Coinbase WS', symbol: alias(symbol), bid, ask, price } : null;
+  const sourceTime = Number.isFinite(Date.parse(payload.time || ''))
+    ? { providerObservedAt: payload.time, timestampBasis: 'provider_event' } : {};
+  return symbol && price > 0 ? { provider: 'Coinbase WS', symbol: alias(symbol), bid, ask, price, ...sourceTime } : null;
 }
 
 export function parseKrakenMessage(payload) {
@@ -188,7 +193,7 @@ export class RealtimeMarketHub extends EventEmitter {
     const symbol = alias(quote.symbol);
     const providers = this.quotes.get(symbol) || new Map();
     const receivedAt = new Date().toISOString();
-    providers.set(quote.provider, { ...quote, receivedAt, observedAt: receivedAt });
+    providers.set(quote.provider, { ...quote, receivedAt, observedAt: quote.providerObservedAt || null });
     this.quotes.set(symbol, providers);
     this.emit('quote', { symbol, provider: quote.provider });
     const consensus = this.getConsensus(symbol);
@@ -256,7 +261,10 @@ export class RealtimeMarketHub extends EventEmitter {
 
   getConsensus(symbol) {
     const rows = [...(this.quotes.get(alias(symbol))?.values() || [])]
-      .filter((row) => row.price > 0 && Date.now() - new Date(row.observedAt).getTime() < 60_000);
+      .filter((row) => {
+        const age = Date.now() - Date.parse(row.providerObservedAt || '');
+        return row.price > 0 && row.timestampBasis === 'provider_event' && Number.isFinite(age) && age >= 0 && age < 60_000;
+      });
     const prices = rows.map((row) => row.price).sort((a, b) => a - b);
     const price = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
     const dispersionPct = price > 0 && prices.length > 1 ? (prices.at(-1) - prices[0]) / price * 100 : 0;

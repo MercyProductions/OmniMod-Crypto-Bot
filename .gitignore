@@ -3,6 +3,7 @@
 .env.*
 *.env
 !.env.example
+!.env.forecasting.example
 !*.env.example
 *.pem
 *.key
