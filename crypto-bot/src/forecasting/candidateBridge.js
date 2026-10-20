@@ -11,7 +11,7 @@ export function eligibleForecastDiscoveryAssets(queue = [], assets = [], now = D
     const age = now-Number(hint.observedAt);
     let reason = !Number.isFinite(age) || age < 0 || age > 30_000 ? 'stale_discovery_hint'
       : !asset || !asset.requiresVerifiedIdentity || evidence?.coinId !== asset.id ? 'missing_existing_verified_coin_identity'
-        : hint.instrument !== `binance:spot:${hint.pair}` || evidence.exchangeId !== 'binance'
+        : hint.instrument !== `binance:spot:${hint.pair}` || hint.pair !== `${hint.base}${hint.quote}` || evidence.exchangeId !== 'binance'
           || hint.base !== evidence.base || hint.quote !== evidence.target ? 'source_identity_mismatch' : null;
     if (reason) rejections.push({ instrument: hint.instrument, code: reason });
     else if (!result.some(row => row.id === asset.id)) result.push({ ...asset, forecastDiscoveryHint: { observedAt: hint.observedAt, reason: hint.reason } });

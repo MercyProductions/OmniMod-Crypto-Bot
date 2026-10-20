@@ -257,8 +257,9 @@ async function executeGuildScan(guildId, options = {}) {
   const providerCoverageMs = Math.round(performance.now() - providerCoverageStarted);
   const deepAnalysisCandidates = coverageScreen.candidates;
   const forecastQueue = config.forecastDiscoveryBridgeEnabled
-    ? await readMarketSnapshot('forecast-discovery-queue') : null;
+    ? await readMarketSnapshot('forecast-discovery-queue').catch(() => ({ candidates: [], bridgeError: 'forecast_queue_unavailable' })) : null;
   const forecastDiscovery = eligibleForecastDiscoveryAssets(forecastQueue?.candidates || [], snapshot.venueCandidates || [], now.getTime());
+  if (forecastQueue?.bridgeError) forecastDiscovery.rejections.push({ code: forecastQueue.bridgeError });
   const preliminary = mergeForecastDiscoveryCandidates(deepAnalysisCandidates, forecastDiscovery.assets, settings.maxProviderCandidates);
   const venueSelection = options.allowNewSignals === false ? { assets: [], rejections: [] }
     : selectVenueResearchAssets(snapshot, preliminary, settings, now.getTime());

@@ -64,6 +64,7 @@ test('forecast bridge requires existing unique exact venue/CoinGecko identity, n
   const hint = { instrument: 'binance:spot:QUIETUSDT', pair: 'QUIETUSDT', base: 'QUIET', quote: 'USDT', observedAt: now };
   assert.equal(eligibleForecastDiscoveryAssets([hint], [asset], now).assets.length, 1);
   assert.equal(eligibleForecastDiscoveryAssets([{ ...hint, quote: 'BTC' }], [asset], now).assets.length, 0);
+  assert.equal(eligibleForecastDiscoveryAssets([{ ...hint, pair: 'BTCUSDT', instrument: 'binance:spot:BTCUSDT' }], [asset], now).assets.length, 0);
   assert.equal(eligibleForecastDiscoveryAssets([hint], [asset, { ...asset, id: 'different', venueDiscovery: { ...asset.venueDiscovery, coinId: 'different' } }], now).assets.length, 0);
   assert.equal(eligibleForecastDiscoveryAssets([{ ...hint, observedAt: now-60_000 }], [asset], now).assets.length, 0);
 });
