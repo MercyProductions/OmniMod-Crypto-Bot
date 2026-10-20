@@ -1,0 +1,21 @@
+{
+  "baseline": "9b88a9f2028a4dcb5d37bfa505378c065335ed72",
+  "baselineTag": "baseline/pre-crypto-forecasting-2026-10-20",
+  "branch": "feat/crypto-forecasting-engine-2026-10-20",
+  "productionChanged": false,
+  "liveTradingEnabled": false,
+  "phases": [
+    { "id": 1, "name": "Audit and preserve baseline", "status": "verified complete", "evidence": "392 baseline tests; 70 source hashes match original local source, remote deployment unverified; CRYPTO_ENGINE_AUDIT.md" },
+    { "id": 2, "name": "Active universe, streaming discovery and candidate bridge", "status": "pending" },
+    { "id": 3, "name": "Python LightGBM and Chronos challengers", "status": "pending" },
+    { "id": 4, "name": "Timestamped feature warehouse and archive import", "status": "pending" },
+    { "id": 5, "name": "Five-horizon forecasts and frozen outcome grading", "status": "pending" },
+    { "id": 6, "name": "Early watch signals and lead-time measurements", "status": "pending" },
+    { "id": 7, "name": "Purged validation, prospective promotion and rollback", "status": "pending" },
+    { "id": 8, "name": "After-cost research and existing risk integration", "status": "pending" },
+    { "id": 9, "name": "Experimental Discord embeds and deduplication", "status": "pending" },
+    { "id": 10, "name": "Authenticated bounded worker and hosting guide", "status": "pending" },
+    { "id": 11, "name": "Real-data comparisons and regression/integration checks", "status": "pending" },
+    { "id": 12, "name": "Publish review branch, evidence and handoff", "status": "pending" }
+  ]
+}

@@ -32,3 +32,11 @@ reviewed-uploads/
 evidence-reports/
 .DS_Store
 Thumbs.db
+.venv*/
+__pycache__/
+*.pyc
+**/artifacts/
+**/datasets/
+*.safetensors
+*.pt
+*.pkl
